@@ -1,7 +1,8 @@
-# یک برنامه دستکتاپ با tkinter بنویسید که اطلاعات یک دانشجو را دریافت می کند و در فایل ذخیره سازی می کند.  باید
-# بتواند اطلاعات تعدادی دانشجو را ذخیره و بر اساس شماره دانشجویی بازیابی کند. همچنین لیست دانشجوها بتواند در یک جدول
-# نشان دهد و با انتخاب هر دانشجو (دانشجویان) آن دانشجو را حذف یا ویرایش کرد.
+import fileinput
+import os
 
+
+# noinspection PyAttributeOutsideInit
 class student:
 
     def file_name(self, item):
@@ -28,16 +29,16 @@ class student:
         f.write('StudentCode:' + self.studentCode)
 
 
-class add_studnet:
+class manipulating_studnet:
 
     def students_file(self, item):
-        f = open('studentsName.txt', 'a')
+        f = open('students_codes.txt', 'a')
         f.write(item + '\n')
 
     def addStudent(self, item):
         for i in range(item):
-            print('please enter the new file name for keeping new information:')
-            x = str(input('use the name of new student:') + '_student.txt')
+            print('please enter the new file name for keeping new information...')
+            x = str(input('use the student ID of new student:') + '_student.txt')
 
             self.students_file(x)
 
@@ -50,6 +51,33 @@ class add_studnet:
             s.father_name(input('FatherName:'))
             s.student_code(input('StudentCode:'))
 
+    def removeStudnet(self, item):
 
-saleh = add_studnet()
-saleh.addStudent(2)
+        if os.path.exists(item):
+            os.remove(item)
+        else:
+            print("The student does not exist")
+
+    def change(self, item):
+
+        print("enter Text to search for:")
+        textToSearch = input("> ")
+
+        print("Text to replace it with:")
+        textToReplace = input("> ")
+
+        # print ("File to perform Search-Replace on:")
+        fileToSearch = item
+
+        tempFile = open(fileToSearch, 'r+')
+
+        for line in fileinput.input(fileToSearch):
+            tempFile.write(line.replace(textToSearch, textToReplace))
+
+        tempFile.close()
+
+
+master = manipulating_studnet()
+# master.addStudent(2)
+# master.removeStudnet('97249801_student.txt')
+# master.change('97149113_student.txt')
